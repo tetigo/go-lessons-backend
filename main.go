@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	fmt.Println("Hi again")
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context){
+		c.JSON(200, gin.H{
+			"message":"pong",
+		})
+	})
+	r.Run(":9090") // runs on 0.0.0.0:9090
 }
+
+// linux: sudo lfof -i -P | grep LISTEN
+// windows: netstat -ab
