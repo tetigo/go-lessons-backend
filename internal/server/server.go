@@ -11,7 +11,7 @@ import (
 
 type Server struct {
 	engine *gin.Engine
-	port uint
+	port   uint
 }
 
 type Config struct {
@@ -22,7 +22,7 @@ func New(config Config) (*Server, error) {
 	engine := gin.Default()
 	server := &Server{
 		engine: engine,
-		port: config.Port,
+		port:   config.Port,
 	}
 	engine.GET("/ping", server.HealthCheck)
 	engine.GET("/categories", server.Categories)
@@ -36,10 +36,9 @@ func (s *Server) HealthCheck(c *gin.Context) {
 	})
 }
 
-func (s *Server) Run() error{
+func (s *Server) Run() error {
 	return s.engine.Run(fmt.Sprintf(":%d", s.port))
 }
-
 
 func (s *Server) Categories(c *gin.Context) {
 	categories := []category.Category{
@@ -60,27 +59,38 @@ func (s *Server) Categories(c *gin.Context) {
 }
 
 func (s *Server) Products(c *gin.Context) {
+	twoDollars := money.New(200, "USD")
+	fourDollars := money.New(400, "USD")
 	products := []product.Product{
 		{
 			ID:               "123",
 			Name:             "Product1",
 			Description:      "Product1 desc",
-			PriceVATExcluded: money.New(100, "USD"),
-			VAT:              money.New(200, "USD"),
+			ShortDescription: "ShortDesc1",
+			PriceVATExcluded: product.Amount{Money: twoDollars, Display: twoDollars.Display()},
+			VAT:              product.Amount{Money: twoDollars, Display: twoDollars.Display()},
+			TotalPrice:       product.Amount{Money: fourDollars, Display: fourDollars.Display()},
+			Image:            "https://conteudo.imguol.com.br/c/noticias/1c/2022/05/24/imagem-criada-no-imagen-prototipo-do-google-que-cria-imagens-baseadas-em-texto-neste-caso-um-cachorro-corgi-andando-de-bicicleta-na-times-square-usando-oculos-de-sol-e-chapeu-de-praia-1653397634334_v2_900x506.jpg",
 		},
 		{
 			ID:               "124",
 			Name:             "Product2",
 			Description:      "Product2 desc",
-			PriceVATExcluded: money.New(200, "USD"),
-			VAT:              money.New(300, "USD"),
+			ShortDescription: "ShortDesc2",
+			PriceVATExcluded: product.Amount{Money: twoDollars, Display: twoDollars.Display()},
+			VAT:              product.Amount{Money: twoDollars, Display: twoDollars.Display()},
+			TotalPrice:       product.Amount{Money: fourDollars, Display: fourDollars.Display()},
+			Image:            "https://conteudo.imguol.com.br/c/noticias/1c/2022/05/24/imagem-criada-no-imagen-prototipo-do-google-que-cria-imagens-baseadas-em-texto-neste-caso-um-cachorro-corgi-andando-de-bicicleta-na-times-square-usando-oculos-de-sol-e-chapeu-de-praia-1653397634334_v2_900x506.jpg",
 		},
 		{
 			ID:               "125",
 			Name:             "Product3",
 			Description:      "Product3 desc",
-			PriceVATExcluded: money.New(500, "USD"),
-			VAT:              money.New(600, "USD"),
+			ShortDescription: "ShortDesc3",
+			PriceVATExcluded: product.Amount{Money: twoDollars, Display: twoDollars.Display()},
+			VAT:              product.Amount{Money: twoDollars, Display: twoDollars.Display()},
+			TotalPrice:       product.Amount{Money: fourDollars, Display: fourDollars.Display()},
+			Image:            "https://conteudo.imguol.com.br/c/noticias/1c/2022/05/24/imagem-criada-no-imagen-prototipo-do-google-que-cria-imagens-baseadas-em-texto-neste-caso-um-cachorro-corgi-andando-de-bicicleta-na-times-square-usando-oculos-de-sol-e-chapeu-de-praia-1653397634334_v2_900x506.jpg",
 		},
 	}
 	c.Header("Access-Control-Allow-Origin", "http://localhost:8080")
