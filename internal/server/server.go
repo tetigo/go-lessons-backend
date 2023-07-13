@@ -54,7 +54,7 @@ func (s *Server) Categories(c *gin.Context) {
 		},
 	}
 
-	c.Header("Access-Control-Allow-Origin", "http://localhost:8080")
+	c.Header("Access-Control-Allow-Origin", "https://dev.dtkgjfj0p2pbr.amplifyapp.com")
 	c.JSON(200, categories)
 }
 
@@ -93,6 +93,6 @@ func (s *Server) Products(c *gin.Context) {
 			Image:            "https://conteudo.imguol.com.br/c/noticias/1c/2022/05/24/imagem-criada-no-imagen-prototipo-do-google-que-cria-imagens-baseadas-em-texto-neste-caso-um-cachorro-corgi-andando-de-bicicleta-na-times-square-usando-oculos-de-sol-e-chapeu-de-praia-1653397634334_v2_900x506.jpg",
 		},
 	}
-	c.Header("Access-Control-Allow-Origin", "http://localhost:8080")
+	c.Header("Access-Control-Allow-Origin", "https://dev.dtkgjfj0p2pbr.amplifyapp.com")
 	c.JSON(200, products)
 }

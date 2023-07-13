@@ -20,6 +20,11 @@ func init(){
 		log.Fatalf("impossible to create the server: %s", err)
 	}
 	
+	// err=myServer.Run() // runs on 0.0.0.0:9090
+	// if err!=nil{
+	// 	log.Fatalf("impossible to start the server: %s", err)
+	// }
+	
 	ginLambda = ginadapter.New(myServer.Engine)
 	
 }
