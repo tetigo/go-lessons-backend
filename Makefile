@@ -9,5 +9,11 @@ build:
 	env GOOS="linux" go build -o bin/api ./api/main.go
 	env GOOS="linux" go build -o bin/hello ./testLambda/main.go
 
-deploy: build
+deploy-dev: build
 	serverless deploy --aws-profile TiagoDeveloper
+
+deploy-stage: build
+	serverless deploy --aws-profile TiagoDeveloper --stage staging 
+
+deploy-prod: build
+	serverless deploy --aws-profile TiagoDeveloper --stage production
