@@ -10,10 +10,17 @@ build:
 	env GOOS="linux" go build -o bin/hello ./testLambda/main.go
 
 deploy-dev: build
-	serverless deploy --aws-profile TiagoDeveloper
+	serverless deploy \
+	--aws-profile TiagoDeveloper \
+	--stage dev \
+	--param="allowedOrigin=https://dev.dtkgjfj0p2pbr.amplifyapp.com"
 
 deploy-stage: build
-	serverless deploy --aws-profile TiagoDeveloper --stage staging 
+	serverless deploy \
+	--aws-profile TiagoDeveloper \
+	--stage staging 
 
 deploy-prod: build
-	serverless deploy --aws-profile TiagoDeveloper --stage production
+	serverless deploy \
+	--aws-profile TiagoDeveloper \
+	--stage production

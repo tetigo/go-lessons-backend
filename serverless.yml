@@ -3,11 +3,15 @@ provider:
   name: aws
   runtime: go1.x
   region: us-east-1
+  environment:
+    # take allowOring from CLI in Makefile
+    ALLOWED_ORIGIN: ${param:allowedOrigin,''}
 package:
-  exclude:
-    - ./**
-  include:
-    - ./bin/**
+  patterns:
+    # exclude everything
+    - '!*/**'
+    # except everything that is inside bin directory
+    - bin/**
 functions:
   hello:
     handler: bin/hello

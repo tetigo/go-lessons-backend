@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/Rhymond/go-money"
 	"github.com/gin-gonic/gin"
@@ -12,10 +13,13 @@ import (
 type Server struct {
 	Engine *gin.Engine
 	port   uint
+	allowedOrigin string
+	model string
 }
 
 type Config struct {
 	Port uint
+	AllowedOrigin string
 }
 
 func New(config Config) (*Server, error) {
@@ -23,7 +27,14 @@ func New(config Config) (*Server, error) {
 	server := &Server{
 		Engine: engine,
 		port:   config.Port,
+		allowedOrigin: config.AllowedOrigin,
+		model: "Gin",
 	}
+	engine.Use(
+		server.CorsMiddleware, 
+		server.ServerModelMiddleware,
+		server.CheckRequestMiddleware,
+	)
 	engine.GET("/ping", server.HealthCheck)
 	engine.GET("/categories", server.Categories)
 	engine.GET("/products", server.Products)
@@ -34,6 +45,22 @@ func (s *Server) HealthCheck(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "pong",
 	})
+}
+
+func (s Server) CorsMiddleware(c *gin.Context)  {
+	c.Header("Access-Control-Allow-Origin", s.allowedOrigin)
+}
+
+func (s Server) ServerModelMiddleware(c *gin.Context) {
+	c.Header("X-Server-Model", s.model)
+}
+
+func (s Server) CheckRequestMiddleware(c *gin.Context) {
+	auth := c.GetHeader("Authorization")
+	if auth != "ABC" {
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
 }
 
 func (s *Server) Run() error {
@@ -54,7 +81,7 @@ func (s *Server) Categories(c *gin.Context) {
 		},
 	}
 
-	c.Header("Access-Control-Allow-Origin", "https://dev.dtkgjfj0p2pbr.amplifyapp.com")
+	
 	c.JSON(200, categories)
 }
 
@@ -93,6 +120,6 @@ func (s *Server) Products(c *gin.Context) {
 			Image:            "https://conteudo.imguol.com.br/c/noticias/1c/2022/05/24/imagem-criada-no-imagen-prototipo-do-google-que-cria-imagens-baseadas-em-texto-neste-caso-um-cachorro-corgi-andando-de-bicicleta-na-times-square-usando-oculos-de-sol-e-chapeu-de-praia-1653397634334_v2_900x506.jpg",
 		},
 	}
-	c.Header("Access-Control-Allow-Origin", "https://dev.dtkgjfj0p2pbr.amplifyapp.com")
+	
 	c.JSON(200, products)
 }
